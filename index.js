@@ -23,8 +23,8 @@ for (let i = 0; i < SIZE; i++) {
 console.log(BOARD);
 
 // Create players
-const p1 = new Player("p1", "X");
-const p2 = new Player("p2", "O");
+const p1 = new Player("Player 1", "X");
+const p2 = new Player("Player 2", "O");
 const PLAYERS = [p1, p2];
 let CurrentPlayer = PLAYERS[0];
 let Winner = null;
@@ -44,7 +44,6 @@ function GetSameValueCellsCount(x, y, val, dir) {
     return count;
 }
 
-// TODO: check why line 2/3 does not trigger a winner
 function GetWinner() {
     const DIRECTIONS = [[1, 0], [0, 1], [1, 1]];
     let winner = null;
@@ -53,24 +52,15 @@ function GetWinner() {
     for (let i = 0; i < SIZE; i++) {
         for (let d = 0; d < DIRECTIONS.length; d++) {
             const dir = DIRECTIONS[d];
-            const row_val = BOARD[0][i].val;
-            const row_res = GetSameValueCellsCount(0, i, row_val, dir);
-            const col_val = BOARD[i][0].val;
-            const col_res = row_res;
-            if (i !== 0)
-                GetSameValueCellsCount(i, 0, col_val, dir);
-
-            if (row_res === SIZE) {
-                winner = PLAYERS.find(e => row_val == e.val);
+            if (GetSameValueCellsCount(0, i, BOARD[0][i].val, dir) === SIZE) {
+                winner = PLAYERS.find(e => BOARD[0][i].val == e.val);
+                return winner;
             }
-            else if (col_res === SIZE) {
-                winner = PLAYERS.find(e => row_val == e.val);
+            // Avoid checking twice the [0][0] cell
+            else if (i !== 0 && GetSameValueCellsCount(i, 0, BOARD[i][0].val, dir) === SIZE) {
+                winner = PLAYERS.find(e => BOARD[0][i].val == e.val);
+                return winner;
             }
-
-            if (winner !== null) {
-                break;
-            }
-
         }
     }
 
@@ -108,7 +98,6 @@ function newGame() {
 
     // Fill the board
     for (let i = 0; i < SIZE; i++) {
-        let row = []
         for (let j = 0; j < SIZE; j++) {
             BOARD[i][j].val = "";
             const elem = document.createElement("div");
@@ -123,7 +112,6 @@ function newGame() {
             board.appendChild(elem);
         }
     }
-
     Winner = null;
 }
 
