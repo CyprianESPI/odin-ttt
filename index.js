@@ -27,6 +27,7 @@ const p1 = new Player("p1", "X");
 const p2 = new Player("p2", "O");
 const PLAYERS = [p1, p2];
 let CurrentPlayer = PLAYERS[0];
+let Winner = null;
 console.log(PLAYERS);
 
 function GetSameValueCellsCount(x, y, val, dir) {
@@ -60,11 +61,16 @@ function GetWinner() {
                 GetSameValueCellsCount(i, 0, col_val, dir);
 
             if (row_res === SIZE) {
-                console.log("Winner", row_val);
+                winner = PLAYERS.find(e => row_val == e.val);
             }
             else if (col_res === SIZE) {
-                console.log("Winner", col_res);
+                winner = PLAYERS.find(e => row_val == e.val);
             }
+
+            if (winner !== null) {
+                break;
+            }
+
         }
     }
 
@@ -73,8 +79,8 @@ function GetWinner() {
 
 function UpdateGameState() {
     console.log(BOARD);
-    const winner = GetWinner();
-    if (winner !== null) {
+    Winner = GetWinner();
+    if (Winner !== null) {
         // Stop game
         console.log("Congratulations! You won", CurrentPlayer);
         return;
@@ -99,6 +105,9 @@ for (let i = 0; i < SIZE; i++) {
     for (let j = 0; j < SIZE; j++) {
         const elem = document.createElement("div");
         elem.addEventListener("click", () => {
+            if (Winner !== null) {
+                return;
+            }
             elem.innerText = CurrentPlayer.val;
             BOARD[i][j].val = CurrentPlayer.val;
             UpdateGameState();
