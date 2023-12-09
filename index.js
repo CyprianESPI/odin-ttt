@@ -36,7 +36,9 @@ function GetSameValueCellsCount(x, y, val, dir) {
         return count;
     }
 
-    while (x < SIZE && y < SIZE && BOARD[x][y].val === val) {
+    while (0 <= x && x < SIZE
+        && 0 <= y && y < SIZE
+        && BOARD[x][y].val === val) {
         count++;
         x += dir[0];
         y += dir[1];
@@ -45,7 +47,7 @@ function GetSameValueCellsCount(x, y, val, dir) {
 }
 
 function GetWinner() {
-    const DIRECTIONS = [[1, 0], [0, 1], [1, 1]];
+    const DIRECTIONS = [[1, 0], [0, 1], [1, 1], [1, -1]];
     let winner = null;
 
     // It is enough to check first row and first column
