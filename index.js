@@ -97,21 +97,36 @@ function GetNextObj(array, obj) {
 }
 
 /* Game - DOM interactions */
-const board = document.getElementById("board");
+newGame();
+function newGame() {
+    const board = document.getElementById("board");
 
-
-for (let i = 0; i < SIZE; i++) {
-    let row = []
-    for (let j = 0; j < SIZE; j++) {
-        const elem = document.createElement("div");
-        elem.addEventListener("click", () => {
-            if (Winner !== null) {
-                return;
-            }
-            elem.innerText = CurrentPlayer.val;
-            BOARD[i][j].val = CurrentPlayer.val;
-            UpdateGameState();
-        }, { once: true });
-        board.appendChild(elem);
+    // Remove previous content
+    while (board.firstChild) {
+        board.firstChild.remove()
     }
+
+    // Fill the board
+    for (let i = 0; i < SIZE; i++) {
+        let row = []
+        for (let j = 0; j < SIZE; j++) {
+            BOARD[i][j].val = "";
+            const elem = document.createElement("div");
+            elem.addEventListener("click", () => {
+                if (Winner !== null) {
+                    return;
+                }
+                elem.innerText = CurrentPlayer.val;
+                BOARD[i][j].val = CurrentPlayer.val;
+                UpdateGameState();
+            }, { once: true });
+            board.appendChild(elem);
+        }
+    }
+
+    Winner = null;
 }
+
+document.getElementById("newGameBtn").addEventListener("click", () => {
+    newGame();
+});
