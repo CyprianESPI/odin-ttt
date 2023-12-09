@@ -75,6 +75,8 @@ function UpdateGameState() {
     if (Winner !== null) {
         // Stop game
         console.log("Congratulations! You won", CurrentPlayer);
+        document.getElementById("winner").innerText = CurrentPlayer.val;
+        dialog.showModal();
         return;
     }
 
@@ -116,6 +118,13 @@ function newGame() {
     }
     Winner = null;
 }
+
+const dialog = document.querySelector("dialog");
+
+dialog.addEventListener("click", () => {
+    if (dialog.open)
+        dialog.close();
+});
 
 document.getElementById("newGameBtn").addEventListener("click", () => {
     newGame();
