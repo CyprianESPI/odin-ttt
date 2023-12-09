@@ -43,6 +43,7 @@ function GetSameValueCellsCount(x, y, val, dir) {
     return count;
 }
 
+// TODO: check why line 2/3 does not trigger a winner
 function GetWinner() {
     const DIRECTIONS = [[1, 0], [0, 1], [1, 1]];
     let winner = null;
@@ -91,6 +92,8 @@ function GetNextObj(array, obj) {
 
 /* Game - DOM interactions */
 const board = document.getElementById("board");
+
+
 for (let i = 0; i < SIZE; i++) {
     let row = []
     for (let j = 0; j < SIZE; j++) {
